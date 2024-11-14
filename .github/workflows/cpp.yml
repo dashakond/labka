@@ -1,4 +1,4 @@
-name: C++ AutoPackage CI
+name: C++ AutoTest CI
 
 on: [push, pull_request]
 
@@ -7,19 +7,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up build tools
+    - uses: actions/checkout@v2
+    - name: Set up C++
+      uses: actions/setup-cpp@v1
+    - name: Install Google Test
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential devscripts debhelper autoconf automake libtool
-
-    - name: Regenerate autotools files
+        sudo apt-get install -y libgtest-dev
+        cd /usr/src/gtest
+        sudo cmake CMakeLists.txt
+        sudo make
+        sudo cp *.a /usr/lib
+    - name: Build and Run Tests
       run: |
-        autoreconf -i
-
-    - name: Build Debian Package
-      run: |
-        dpkg-buildpackage -us -uc
+        make check
 
