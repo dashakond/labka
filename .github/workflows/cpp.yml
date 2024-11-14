@@ -1,16 +1,17 @@
-name: C++ Automake CI
-
 on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up C++
-      uses: actions/setup-cpp@v1
+
+    - name: Set up C++ toolchain
+      uses: actions/setup-toolchain@v1
+      with:
+        toolchain: gcc
+
     - name: Build with Automake
       run: |
         aclocal
@@ -19,4 +20,3 @@ jobs:
         ./configure
         make
         make dist
-
