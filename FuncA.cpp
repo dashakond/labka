@@ -10,3 +10,4 @@ double FuncA::calculate(int n, double x) {
     return result;
 }
 
+
