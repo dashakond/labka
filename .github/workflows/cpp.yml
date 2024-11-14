@@ -2,21 +2,21 @@ on: [push, pull_request]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up C++ toolchain
-      uses: actions/setup-toolchain@v1
-      with:
-        toolchain: gcc
-
-    - name: Build with Automake
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential automake autoconf
+    - name: Generate configuration files
       run: |
         aclocal
         autoconf
         automake --add-missing
+    - name: Configure and Build
+      run: |
         ./configure
         make
-        make dist
