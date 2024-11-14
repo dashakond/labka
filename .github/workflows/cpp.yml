@@ -7,15 +7,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential automake autoconf
 
-      - name: Install g++ and make
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y g++ make
+    - name: Generate configuration files
+      run: |
+        aclocal
+        autoconf
+        automake --add-missing
 
-      - name: Build with Make
-        run: |
-          make
-          ./main
+    - name: Configure and Build
+      run: |
+        ./configure
+        make
 
+    - name: Create tarball distribution
+      run: |
+        make dist
+      # Тепер створення tarball буде виконуватись за допомогою make dist
+     
+    - name: Upload tarball artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: program-tarball
+        path: dist/*.tar.gz
