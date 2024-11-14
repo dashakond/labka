@@ -14,8 +14,6 @@
 
 @SET_MAKE@
 
-# Makefile.am
-
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -271,6 +269,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 main_SOURCES = main.cpp FuncA.cpp
+AM_DISTCHECK_CONFIGURE_FLAGS = --prefix=/usr
 all: all-am
 
 .SUFFIXES:

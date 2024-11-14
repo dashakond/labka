@@ -1,22 +1,18 @@
+name: C++ AutoPackage CI
+
 on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install dependencies
+    - name: Set up C++
+      uses: actions/setup-cpp@v1
+    - name: Build Debian Package
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential automake autoconf
-    - name: Generate configuration files
-      run: |
-        aclocal
-        autoconf
-        automake --add-missing
-    - name: Configure and Build
-      run: |
-        ./configure
-        make
+        sudo apt-get install -y devscripts debhelper
+        dpkg-buildpackage -us -uc
+
